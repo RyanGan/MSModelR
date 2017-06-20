@@ -1,7 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-.Ruserdata
 
-# ignore Rproj
+# I don't think Rproj is necissary to not pushing
 *.Rproj
