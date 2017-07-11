@@ -61,12 +61,12 @@ The general concept of the counter factual is it takes our "what if?" questions 
 
 ```{r simple simulation}
 # set sample size and seed 
-n <- 1000; set.seed(777)
+n <- 5000; set.seed(777)
 # simulate exposure/treatment data with equal probability
 sim_data <- as_tibble((rbinom(n, 1, prob = 0.5))) %>% 
   rename(A = value) %>% 
   # simulate protective effect between A and Y
-  mutate(Y = rbinom(n, 1, 1/(1+exp(-(-1.5 + -0.6*A)))))
+  mutate(Y = rbinom(n, 1, 1/(1+exp(-(-2.5 + -0.6*A)))))
 # print first 6 observations
 head(sim_data)
 ```
@@ -104,10 +104,58 @@ exp(ratio_model$coefficients[2])
 ```
 The treated group is 40% less likely to develop the outcome compared to the untreated group. 
 
-## Updating the Predicted 
+## Updating the Predicted Outcomes Under a = 1 
 
-## What is a Marginal Structural Model (MSM)?
+First we duplicate our original dataframe and then set everyone's treatment to 1.
 
+```{r create a1 exposure dataframe}
+# set everyone to exposed from our original dataframe
+sim_data_a1 <- sim_data %>% mutate(A = 1)
+# view first 6 records
+head(sim_data_a1)
+```
 
+Now we apply our saved model coefficients (ratio_model) and updated the predicted values using the dataframe where everyone receives treatment E(Y|a=1).
 
-1. Class of statistical models were first proposed by Robins 2000 to estimate causal effects of a time-dependent exposure accounting for a time-dependent confounder
+```{r pr a1}
+# updated predicted probability of outcome 
+pr_a1 <- predict(ratio_model, newdata = sim_data_a1, type = "response")
+# average probability where everyone is exposed
+mean(pr_a1)
+```
+
+## Updating the Predicted Outcomes Under a = 0
+
+We repeat the same step under the scenario where no one is treated.
+
+```{r create a1 exposure dataframe}
+# set everyone to exposed from our original dataframe
+sim_data_a0 <- sim_data %>% mutate(A = 0)
+# view first 6 records
+head(sim_data_a0)
+```
+
+Updating our predicted probability under no treatment scenario E(Y|a=0).
+
+```{r pr a0}
+# updated predicted probability of outcome 
+pr_a0 <- predict(ratio_model, newdata = sim_data_a0, type = "response")
+# average probability where no one is exposed
+mean(pr_a0)
+```
+
+## Estimate the Counterfactual Parameter of Interest
+
+Now that we have a mean value for Y where everyone is treated and no one is treated, we can estimate our risk ratio.
+
+```{r g forumla ratio}
+mean(pr_a1)/mean(pr_a0)
+```
+
+Let's compare to our estimate using logistic regression again.
+
+```{r standard est result}
+exp(ratio_model$coefficients[2])
+```
+
+We get pretty much the same result. That was a lot of steps to get the same answer. 
