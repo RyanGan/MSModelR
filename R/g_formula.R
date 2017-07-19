@@ -1,16 +1,16 @@
-#' G-estimation method
+#' G-formula method
 #'
 #' Function calculates a "causal" estimate of a binary
 #' treatment/exposure (a) on an outcome (y) using simple substitution
-#' (g-estimation). It can calculate the risk difference or risk ratio.
+#' (g-formula). It can calculate the risk difference or risk ratio.
 #' @param estimate Estimate difference or ratio. Defaults to "diff"
-#' @keywords gestimation
+#' @keywords g-formula
 #' @export
 #' @examples
-#' g.estimation()
+#' g.formula()
 
-# g-estimation function ----
-g.estimation <- function(data, y, a, q.model, model.family, estimate="diff"){
+# g-formula function ----
+g.formula <- function(data, y, a, q.model, model.family, estimate="diff"){
   # create a = 1 and a = 0 dataframes ----
   a1_df <- a0_df <- data
   a1_df[, a] <- 1
@@ -36,7 +36,7 @@ g.estimation <- function(data, y, a, q.model, model.family, estimate="diff"){
     # output
       return(msm_val)
 
-} # end g.estimation function
+} # end g.formula function
 
 
 

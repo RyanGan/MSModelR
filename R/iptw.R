@@ -1,13 +1,13 @@
-#' IPTW-estimation method
+#' IPTW method
 #'
 #' Functions calculates a "causal" estimate of a binary
 #' treatment/exposure (a) on an outcome (y) using inverse probability of treatment
 #' weighting (IPTW). It can calculate the risk difference or risk ratio.
 #' @param estimate Estimate difference or ratio. Defaults to "diff"
-#' @keywords iptw
+#' @keywords inverse-probability-of-treatment weight, iptw, IPTW
 #' @export
 #' @examples
-#' iptw.estimation()
+#' iptw()
 # inverse probability of treatment weighting (IPTW) ----
 
 iptw.estimation <- function(data, y, a, w, estimate="diff"){
