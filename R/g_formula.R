@@ -17,7 +17,7 @@ g.formula <- function(data, y, a, q.model, model.family, estimate="diff"){
   a0_df[, a] <- 0
   # run q-formula
     model <- glm(as.formula(paste(y, q_mod, sep = "~")), data = data,
-                 family = mod_family)
+                 family = mod.family)
   # calculate mean expected in a1 and a0
     pr_a1 <- mean(predict(model, newdata = a1_df, type = "response"))
     pr_a0 <- mean(predict(model, newdata = a0_df, type = "response"))
