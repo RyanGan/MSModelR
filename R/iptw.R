@@ -10,7 +10,7 @@
 #' iptw()
 # inverse probability of treatment weighting (IPTW) ----
 
-iptw.estimation <- function(data, y, a, w, estimate="diff"){
+iptw <- function(data, y, a, w, estimate="diff"){
   # step 1: estimate propensity of treatment ----
     prop_mod <- glm(as.formula(paste(a, w, sep = "~")), data = data,
                     family = "binomial")
